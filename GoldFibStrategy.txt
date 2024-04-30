@@ -1,0 +1,187 @@
+//@version=5
+strategy("Fib Test ", overlay=true, margin_long=100, margin_short=100)
+n = input(0.786, "Decimal Value")
+DO = request.security(syminfo.tickerid, "D", open)
+
+var bool Lb_34 = false
+var bool Lb_21 = false
+var bool Lb_13 = false
+var bool Lb_8 = false
+
+var bool Sb_34 = false
+var bool Sb_21 = false
+var bool Sb_13 = false
+var bool Sb_8 = false
+
+var bool Lpb_34 = false
+var bool Lpb_21 = false
+var bool Lpb_13 = false
+var bool Lpb_8 = false
+var bool Lpb_5 = false
+
+var bool Spb_34 = false
+var bool Spb_21 = false
+var bool Spb_13 = false
+var bool Spb_8 = false
+var bool Spb_5 = false
+
+l_34 = (high[1] >= (DO + 34 * n)) and (high[1] <= (DO + 55 * 0.786)) 
+l_21 = (high[1] >= (DO + 21 * n)) and (high[1] <=( DO + 34 * 0.786)) 
+l_13 = (high[1] >= (DO + 13 * n)) and (high[1] <= (DO + 21 * 0.786)) 
+l_8 = (high[1] >= (DO + 8 * n)) and (high[1] <= (DO + 13 * 0.786)) 
+
+p_34 = (low[1] <= (DO + 21)) and (low[1] >= (DO + 21 * 0.786))
+p_21 = (low[1] <= (DO + 13)) and (low[1] >= (DO + 13 * 0.786))
+p_13 = (low[1] <= (DO + 8)) and (low[1] >= (DO + 8 * 0.786))
+p_8 = (low[1] <= (DO + 5)) and (low[1] >= (DO + 5 * 0.786))
+p_5 = (low[1] <= (DO + 3)) and (low[1] >= (DO + 3 * 0.786))
+
+LE_34 = close[1] >= (DO + 34 * 0.786 )
+LE_21 = close[1] >= (DO + 21 * 0.786) 
+LE_13 = close[1] >= (DO + 13 * 0.786) 
+LE_8 = close[1] >= (DO + 8 * 0.786) 
+
+s_34 = (low[1] <= DO - (34 * n)) and (low[1] >= (DO - 55 * 0.786))
+s_21 = (low[1] <= DO -( 21 * n)) and (low[1] >= (DO - 34 * 0.786))
+s_13 = (low[1] <= DO - (13 * n)) and (low[1] >= (DO - 21 * 0.786))
+s_8 = (low[1] <= DO - (8 * n)) and (low[1] >= (DO - 13 * 0.786))
+
+sp_34 = (high[1] >= (DO - 21)) and (high[1] <= (DO - 21 * 0.786)) 
+sp_21 = (high[1] >= (DO - 13)) and (high[1] <= (DO - 13 * 0.786)) 
+sp_13 = (high[1] >=( DO - 8)) and (high[1] <= (DO - 8 * 0.786)) 
+sp_8 = (high[1] >= (DO - 5)) and (high[1] <= (DO - 5 * 0.786)) 
+sp_5 = (high[1] >= (DO - 3)) and (high[1] <= (DO - 3 * 0.786)) 
+
+SE_34 = close[1] <= (DO - 34 * 0.786)
+SE_21 = close[1] <= (DO - 21 * 0.786)
+SE_13 = close[1] <= (DO - 13 * 0.786)
+SE_8 = close[1] <= (DO - 8 * 0.786)
+
+if l_34 and not Lb_34
+    Lb_34 := true
+    Lb_21 := false
+if l_21 and not Lb_21
+    Lb_21 := true
+    Lb_13 := false
+if l_13 and not Lb_13
+    Lb_13 := true
+    Lb_8 := false
+if l_8 and not Lb_8
+    Lb_8 := true
+    Sb_34 := false
+if s_34 and not Sb_34
+    Sb_34 := true
+    Sb_21 := false
+if s_21 and not Sb_21
+    Sb_21 := true
+    Sb_13 := false
+if s_13 and not Sb_13
+    Sb_13 := true
+    Sb_8 := false
+if s_8 and not Sb_8
+    Sb_8 := true
+
+if  Lb_34
+    if p_34
+        Lpb_34 := true
+    else if p_21
+        Lpb_21 := true
+if Lb_21
+    if p_21
+        Lpb_21 := true
+    else if p_13
+        Lpb_13 := true
+if Lb_13
+    if p_13
+        Lpb_13 := true
+    else if p_8
+        Lpb_8 := true
+    else if p_5
+        Lpb_5 := true
+if Lb_8
+    if p_8
+        Lpb_8 := true
+    else if p_5
+        Lpb_5 := true
+if Sb_34
+    if sp_34
+        Spb_34 := true
+    else if sp_21
+        Spb_21 := true
+if Sb_21
+    if sp_21
+        Spb_21 := true
+    else if sp_13
+        Spb_13 := true
+if Sb_13
+    if sp_13
+        Spb_13 := true
+    else if sp_8
+        Spb_8 := true
+    else if sp_5
+        Spb_5 := true
+if Sb_8
+    if sp_8
+        Spb_8 := true
+    else if sp_5
+        Spb_5 := true
+
+if LE_34 and Lpb_34
+    strategy.entry("Long34-C1", strategy.long)
+if LE_34 and Lpb_21
+    strategy.entry("Long34-C2", strategy.long)
+if LE_21 and Lpb_21
+    strategy.entry("Long21-C1", strategy.long)
+if LE_21 and Lpb_13
+    strategy.entry("Long21-C2", strategy.long)
+if LE_13 and Lpb_13
+    strategy.entry("Long13-C1", strategy.long)
+if LE_13 and Lpb_8
+    strategy.entry("Long13-C2", strategy.long)
+if LE_13 and Lpb_5
+    strategy.entry("Long13-C3", strategy.long)
+if LE_8 and Lpb_8
+    strategy.entry("Long8-C1", strategy.long)
+if LE_8 and Lpb_5
+    strategy.entry("Long8-C2", strategy.long)
+if SE_34 and Spb_34
+    strategy.entry("Short34-C1", strategy.short)
+if SE_34 and Spb_21
+    strategy.entry("Short34-C2", strategy.short)
+if SE_21 and Spb_21
+    strategy.entry("Short21-C1", strategy.short)
+if SE_21 and Spb_13
+    strategy.entry("Short21-C2", strategy.short)
+if SE_13 and Spb_13
+    strategy.entry("Short13-C1", strategy.short)
+if SE_13 and Spb_8
+    strategy.entry("Short13-C2", strategy.short)
+if SE_13 and Spb_5
+    strategy.entry("Short13-C3", strategy.short)
+if SE_8 and Spb_8
+    strategy.entry("Short8-C1", strategy.short)
+if SE_8 and Spb_5
+    strategy.entry("Short8-C2", strategy.short)
+
+strategy.exit("LTp_34C1","Long34-C1",profit = DO + 55, loss = DO + 21)
+strategy.exit("LTp_34C2","Long34-C2",profit = DO + 55, loss = DO + 13)
+strategy.exit("LTp_21C1","Long21-C1",profit = DO + 34, loss = DO + 13)
+strategy.exit("LTp_21C2","Long21-C2",profit = DO + 34, loss = DO + 8)
+strategy.exit("LTp_13C1","Long13-C1",profit = DO + 21, loss = DO + 8)
+strategy.exit("LTp_13C2","Long13-C2",profit = DO + 21, loss = DO + 5)
+strategy.exit("LTp_13C3","Long13-C3",profit = DO + 21, loss = DO + 3)
+strategy.exit("LTp_8C1","Long8-C1",profit = DO + 13, loss = DO + 5)
+strategy.exit("LTp_8C2","Long8-C2",profit = DO + 13, loss = DO + 3)
+
+strategy.exit("STp_34C1","Short34-C1",profit = DO - 55, loss = DO - 21)
+strategy.exit("STp_34C2","Short34-C2",profit = DO - 55, loss = DO - 13)
+strategy.exit("STp_21C1","Short21-C1",profit = DO - 34, loss = DO - 13)
+strategy.exit("STp_21C2","Short21-C2",profit = DO - 34, loss = DO - 8)
+strategy.exit("STp_13C1","Short13-C1",profit = DO - 21, loss = DO - 8)
+strategy.exit("STp_13C2","Short13-C2",profit = DO - 21, loss = DO - 5)
+strategy.exit("STp_13C3","Short13-C3",profit = DO - 21, loss = DO - 3)
+strategy.exit("STp_8C1","Short8-C1",profit = DO - 13, loss = DO - 5)
+strategy.exit("STp_8C2","Short8-C2",profit = DO - 13, loss = DO - 3)
+is_seventeen_hours = hour >= 16 and minute == 0 
+if is_seventeen_hours
+    strategy.close_all("close")
